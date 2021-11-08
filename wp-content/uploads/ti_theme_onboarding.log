@@ -1,0 +1,18 @@
+[24/Sep/2021:07:53:58] (I): WordPress Instance Info:
+[24/Sep/2021:07:53:58] (I): Home URL : http://localhost/wordpress
+[24/Sep/2021:07:53:58] (I): Site URL : http://localhost/wordpress
+[24/Sep/2021:07:53:58] (I): WordPress Version : 5.8.1
+[24/Sep/2021:07:53:58] (I): Onboarding Version : 1.1.17
+[24/Sep/2021:07:53:58] (I): Multisite : No
+[24/Sep/2021:07:53:58] (I): Server Info : Apache/2.4.46 (Win64) OpenSSL/1.1.1j PHP/8.0.3
+[24/Sep/2021:07:53:58] (I): PHP Version : 8.0.3
+[24/Sep/2021:07:53:58] (I): HTTPS : No
+[24/Sep/2021:07:53:58] (I): PHP Max Execution Time : 120
+[24/Sep/2021:07:53:58] (I): PHP Max Input Vars : 1000
+[24/Sep/2021:07:53:58] (I): Max Upload Size : 41943040
+[24/Sep/2021:07:53:58] (I): Plugins:
+[24/Sep/2021:07:53:58] (I): [PLUGIN] Classic Editor : v1.6.2 (WordPress Contributors)
+[24/Sep/2021:07:53:58] (I): [PLUGIN] Elementor : v3.4.4 (Elementor.com)
+[24/Sep/2021:07:53:58] (I): [PLUGIN] Templates Patterns Collection : v1.1.17 (ThemeIsle)
+[24/Sep/2021:07:53:58] (I): [PLUGIN] Orbit Fox Companion : v2.10.7 (Themeisle)
+[24/Sep/2021:07:53:58] (I): [PLUGIN] WooCommerce : v5.7.1 (Automattic)
