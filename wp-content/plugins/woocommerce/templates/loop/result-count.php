@@ -26,6 +26,7 @@ if (!defined('ABSPATH')) {
 <p class="tile-sukiennoibac">
 	Sự kiện nổi bậc
 </p>
+<br>
 <!-- <?php
 		// phpcs:disable WordPress.Security
 		if (1 === intval($total)) {

@@ -46,6 +46,6 @@ global $product;
 		font-style: normal; 
 		font-weight: bold; "> <?php echo $price_html; ?> VNĐ</span>
 
-		<a class="badge btn-danger">Xem chi tiết</a>
+		<a class="badge btn-danger" >Xem chi tiết</a>
 	</div>
 <?php endif; ?>
