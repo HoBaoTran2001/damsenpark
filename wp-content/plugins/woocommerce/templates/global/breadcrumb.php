@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Shop breadcrumb
@@ -17,9 +16,9 @@
  * @see         woocommerce_breadcrumb()
  */
 
-if (!defined('ABSPATH')) {
-	exit;
-}
+// if ( ! defined( 'ABSPATH' ) ) {
+// 	exit;
+// }
 
 // if ( ! empty( $breadcrumb ) ) {
 

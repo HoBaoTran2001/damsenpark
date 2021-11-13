@@ -24,7 +24,6 @@ global $product;
 ?>
 
 <?php if ($price_html = $product->get_price_html()) : ?>
-
 	<span class="dspark" style="font-family:'Montserrat';
 					font-size: 13px;">
 		Đầm Sen Park</span>
@@ -36,7 +35,7 @@ global $product;
 		font-size: 13px; 
 		color: #444444;">
 			<i class='far fa-calendar-alt' style='font-size:16px;color: #ED7200;'></i>
-			30/05/2021 - 01/06/2021
+			30/05/2021-01/06/2021
 		</span>
 
 		<span class=" price" style="position: static;
@@ -46,6 +45,8 @@ global $product;
 		font-style: normal; 
 		font-weight: bold; "> <?php echo $price_html; ?></span>
 
-		<a class="badge btn-danger">Xem chi tiết</a>
+		<a class="badge btn-danger" href="#">Xem chi tiết</a>
 	</div>
+
+
 <?php endif; ?>
