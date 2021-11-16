@@ -45,7 +45,7 @@ global $product;
 		font-style: normal; 
 		font-weight: bold; "> <?php echo $price_html; ?></span>
 
-		<a class="badge btn-danger" href="#">Xem chi tiết</a>
+		<a class="badge btn-danger" href="http://localhost/damsenpark/su-kien-1/">Xem chi tiết</a>
 	</div>
 
 
