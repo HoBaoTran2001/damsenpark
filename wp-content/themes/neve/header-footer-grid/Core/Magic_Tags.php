@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Handles Magic Tags
  *
@@ -15,7 +16,8 @@ use Neve\Views\Post_Layout;
  *
  * @package Neve\Views\Pluggable
  */
-class Magic_Tags {
+class Magic_Tags
+{
 	/**
 	 * The magic tags options used for Customizer.
 	 *
@@ -49,8 +51,9 @@ class Magic_Tags {
 	 *
 	 * @return Magic_Tags
 	 */
-	public static function get_instance() {
-		if ( null === self::$_instance ) {
+	public static function get_instance()
+	{
+		if (null === self::$_instance) {
 			self::$_instance = new self();
 		}
 
@@ -62,9 +65,10 @@ class Magic_Tags {
 	 *
 	 * @return void
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 		$this->setup_config();
-		if ( class_exists( 'WooCommerce', false ) ) {
+		if (class_exists('WooCommerce', false)) {
 			$this->magic_tags = array_merge(
 				$this->magic_tags,
 				[
@@ -75,7 +79,7 @@ class Magic_Tags {
 				]
 			);
 		}
-		self::$magic_tag_regex = implode( '|', $this->magic_tags );
+		self::$magic_tag_regex = implode('|', $this->magic_tags);
 	}
 
 	/**
@@ -85,18 +89,19 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function do_magic_tags( $input ) {
-		if ( empty( self::$magic_tag_regex ) ) {
+	public function do_magic_tags($input)
+	{
+		if (empty(self::$magic_tag_regex)) {
 			return $input;
 		}
 
-		if ( ! preg_match( '/\\{\\s?\\w+\\s?\\}/', $input ) ) {
+		if (!preg_match('/\\{\\s?\\w+\\s?\\}/', $input)) {
 			return $input;
 		}
 
-		if ( strpos( $input, 'http://{current_single_url}' ) !== false || strpos( $input, 'https://{current_single_url}' ) !== false ) {
-			$input = str_replace( 'http://{current_single_url}', '{current_single_url}', $input );
-			$input = str_replace( 'https://{current_single_url}', '{current_single_url}', $input );
+		if (strpos($input, 'http://{current_single_url}') !== false || strpos($input, 'https://{current_single_url}') !== false) {
+			$input = str_replace('http://{current_single_url}', '{current_single_url}', $input);
+			$input = str_replace('https://{current_single_url}', '{current_single_url}', $input);
 		}
 
 		return preg_replace_callback(
@@ -116,17 +121,18 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	private function do_magic_tag( $matches ) {
+	private function do_magic_tag($matches)
+	{
 		$tag = $matches[0];
 
-		$tag = trim( $tag, '{} ' );
+		$tag = trim($tag, '{} ');
 
-		if ( ! method_exists( $this, $tag ) ) {
+		if (!method_exists($this, $tag)) {
 			return '';
 		}
 
 		$allowed_tags = wp_kses_allowed_html();
-		if ( $tag === 'current_post_meta' || $tag === 'meta_date' ) {
+		if ($tag === 'current_post_meta' || $tag === 'meta_date') {
 			$allowed_tags['span'] = [
 				'class' => [],
 			];
@@ -137,7 +143,7 @@ class Magic_Tags {
 			];
 		}
 
-		if ( $tag === 'meta_author' ) {
+		if ($tag === 'meta_author') {
 			$allowed_tags['span'] = [
 				'class' => [],
 			];
@@ -149,7 +155,7 @@ class Magic_Tags {
 			];
 		}
 
-		return wp_kses( call_user_func( [ $this, $tag ] ), $allowed_tags );
+		return wp_kses(call_user_func([$this, $tag]), $allowed_tags);
 	}
 
 	/**
@@ -157,7 +163,8 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function current_single_title() {
+	public function current_single_title()
+	{
 		return is_singular() ? get_the_title() : '';
 	}
 
@@ -166,7 +173,8 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function current_single_excerpt() {
+	public function current_single_excerpt()
+	{
 		return is_singular() ? get_the_excerpt() : '';
 	}
 
@@ -175,9 +183,10 @@ class Magic_Tags {
 	 *
 	 * @return string.
 	 */
-	public function current_post_meta() {
+	public function current_post_meta()
+	{
 		ob_start();
-		Post_Layout::render_post_meta( false );
+		Post_Layout::render_post_meta(false);
 		$meta = ob_get_contents();
 		ob_end_clean();
 
@@ -189,7 +198,8 @@ class Magic_Tags {
 	 *
 	 * @return string.
 	 */
-	public function meta_author() {
+	public function meta_author()
+	{
 		return '<span class="nv-dynamic-author-meta">' . Post_Meta::neve_get_author_meta() . '</span>';
 	}
 
@@ -198,9 +208,10 @@ class Magic_Tags {
 	 *
 	 * @return string.
 	 */
-	public function meta_date() {
+	public function meta_date()
+	{
 		ob_start();
-		do_action( 'neve_post_meta_single', array( 'date' ), false );
+		do_action('neve_post_meta_single', array('date'), false);
 		$meta = ob_get_contents();
 		ob_end_clean();
 
@@ -212,8 +223,9 @@ class Magic_Tags {
 	 *
 	 * @return string.
 	 */
-	public function meta_category() {
-		return get_the_category_list( ', ', '', get_the_ID() );
+	public function meta_category()
+	{
+		return get_the_category_list(', ', '', get_the_ID());
 	}
 
 	/**
@@ -221,9 +233,10 @@ class Magic_Tags {
 	 *
 	 * @return string.
 	 */
-	public function meta_comments() {
+	public function meta_comments()
+	{
 		$comments = Post_Meta::get_comments();
-		return ! empty( $comments ) ? $comments : '';
+		return !empty($comments) ? $comments : '';
 	}
 
 	/**
@@ -231,8 +244,9 @@ class Magic_Tags {
 	 *
 	 * @return string.
 	 */
-	public function meta_time_to_read() {
-		return apply_filters( 'neve_do_read_time', '' );
+	public function meta_time_to_read()
+	{
+		return apply_filters('neve_do_read_time', '');
 	}
 
 	/**
@@ -240,7 +254,8 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function archive_description() {
+	public function archive_description()
+	{
 		return get_the_archive_description();
 	}
 
@@ -249,12 +264,13 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function archive_title() {
-		if ( get_option( 'show_on_front' ) === 'page' && is_home() ) {
-			$blog_page_id = get_option( 'page_for_posts' );
-			return get_the_title( $blog_page_id );
+	public function archive_title()
+	{
+		if (get_option('show_on_front') === 'page' && is_home()) {
+			$blog_page_id = get_option('page_for_posts');
+			return get_the_title($blog_page_id);
 		}
-		return html_entity_decode( get_the_archive_title() );
+		return html_entity_decode(get_the_archive_title());
 	}
 
 	/**
@@ -262,8 +278,9 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function site_title() {
-		return get_bloginfo( 'title' );
+	public function site_title()
+	{
+		return get_bloginfo('title');
 	}
 
 	/**
@@ -271,8 +288,9 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function site_tagline() {
-		return get_bloginfo( 'description' );
+	public function site_tagline()
+	{
+		return get_bloginfo('description');
 	}
 
 	/**
@@ -280,8 +298,9 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function author_bio() {
-		return get_the_author_meta( 'description', ( (int) get_post_field( 'post_author', get_the_ID() ) ) );
+	public function author_bio()
+	{
+		return get_the_author_meta('description', ((int) get_post_field('post_author', get_the_ID())));
 	}
 
 	/**
@@ -289,8 +308,9 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function author_name() {
-		return get_the_author_meta( 'display_name', ( (int) get_post_field( 'post_author', get_the_ID() ) ) );
+	public function author_name()
+	{
+		return get_the_author_meta('display_name', ((int) get_post_field('post_author', get_the_ID())));
 	}
 
 	/**
@@ -298,7 +318,8 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function current_single_url() {
+	public function current_single_url()
+	{
 		return is_singular() ? get_permalink() : '';
 	}
 
@@ -307,7 +328,8 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function home_url() {
+	public function home_url()
+	{
 		return get_home_url();
 	}
 
@@ -316,8 +338,9 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function archive_url() {
-		return get_post_type_archive_link( get_post_field( 'post_type' ) );
+	public function archive_url()
+	{
+		return get_post_type_archive_link(get_post_field('post_type'));
 	}
 
 	/**
@@ -325,8 +348,9 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function author_url() {
-		return get_author_posts_url( ( (int) get_post_field( 'post_author', get_the_ID() ) ) );
+	public function author_url()
+	{
+		return get_author_posts_url(((int) get_post_field('post_author', get_the_ID())));
 	}
 
 	/**
@@ -334,8 +358,9 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function current_year() {
-		return gmdate( 'Y' );
+	public function current_year()
+	{
+		return gmdate('Y');
 	}
 
 	/**
@@ -343,12 +368,13 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function product_price() {
-		if ( ! class_exists( 'WooCommerce', false ) ) {
+	public function product_price()
+	{
+		if (!class_exists('WooCommerce', false)) {
 			return '';
 		}
-		$product = wc_get_product( get_the_ID() );
-		return is_singular( 'product' ) ? $product->get_price_html( $product->get_price() ) : '';
+		$product = wc_get_product(get_the_ID());
+		return is_singular('product') ? $product->get_price_html($product->get_price()) : '';
 	}
 
 	/**
@@ -356,13 +382,14 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function product_title() {
-		if ( ! class_exists( 'WooCommerce', false ) ) {
+	public function product_title()
+	{
+		if (!class_exists('WooCommerce', false)) {
 			return '';
 		}
-		$product = wc_get_product( get_the_ID() );
+		$product = wc_get_product(get_the_ID());
 
-		return is_singular( 'product' ) ? $product->get_title() : '';
+		return is_singular('product') ? $product->get_title() : '';
 	}
 
 	/**
@@ -370,8 +397,9 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function cart_link() {
-		if ( ! class_exists( 'WooCommerce', false ) ) {
+	public function cart_link()
+	{
+		if (!class_exists('WooCommerce', false)) {
 			return '';
 		}
 
@@ -383,8 +411,9 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function checkout_link() {
-		if ( ! class_exists( 'WooCommerce', false ) ) {
+	public function checkout_link()
+	{
+		if (!class_exists('WooCommerce', false)) {
 			return '';
 		}
 
@@ -396,9 +425,10 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function user_nicename() {
+	public function user_nicename()
+	{
 		$current_user = wp_get_current_user();
-		if ( empty( $current_user ) ) {
+		if (empty($current_user)) {
 			return '';
 		}
 		return $current_user->user_nicename;
@@ -409,9 +439,10 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function display_name() {
+	public function display_name()
+	{
 		$current_user = wp_get_current_user();
-		if ( empty( $current_user ) ) {
+		if (empty($current_user)) {
 			return '';
 		}
 		return $current_user->display_name;
@@ -422,9 +453,10 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function user_email() {
+	public function user_email()
+	{
 		$current_user = wp_get_current_user();
-		if ( empty( $current_user ) ) {
+		if (empty($current_user)) {
 			return '';
 		}
 		return $current_user->user_email;
@@ -435,7 +467,8 @@ class Magic_Tags {
 	 *
 	 * @return mixed
 	 */
-	public function get_options() {
+	public function get_options()
+	{
 		return $this->options;
 	}
 
@@ -444,8 +477,9 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function cart_total() {
-		if ( ! class_exists( 'WooCommerce' ) ) {
+	public function cart_total()
+	{
+		if (!class_exists('WooCommerce')) {
 			return '';
 		}
 		return '<span class="nv-cart-icon-total-plain">' . WC()->cart->get_cart_contents_total() . '</span>';
@@ -456,8 +490,9 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function cart_total_currency_symbol() {
-		if ( ! class_exists( 'WooCommerce' ) ) {
+	public function cart_total_currency_symbol()
+	{
+		if (!class_exists('WooCommerce')) {
 			return '';
 		}
 
@@ -469,8 +504,9 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function currency_name() {
-		if ( ! class_exists( 'WooCommerce' ) || ! function_exists( 'get_woocommerce_currency' ) ) {
+	public function currency_name()
+	{
+		if (!class_exists('WooCommerce') || !function_exists('get_woocommerce_currency')) {
 			return '';
 		}
 
@@ -482,8 +518,9 @@ class Magic_Tags {
 	 *
 	 * @return string
 	 */
-	public function currency_symbol() {
-		if ( ! class_exists( 'WooCommerce' ) || ! function_exists( 'get_woocommerce_currency_symbol' ) ) {
+	public function currency_symbol()
+	{
+		if (!class_exists('WooCommerce') || !function_exists('get_woocommerce_currency_symbol')) {
 			return '';
 		}
 
@@ -493,168 +530,169 @@ class Magic_Tags {
 	/**
 	 * Setup the magic tags config and options array.
 	 */
-	private function setup_config() {
+	private function setup_config()
+	{
 		$this->options = [
 			[
-				'label'    => __( 'Single', 'neve' ),
+				'label'    => __('Single', 'neve'),
 				'controls' => [
 					'current_single_title'   => [
-						'label' => __( 'Current Single Title', 'neve' ),
+						'label' => __('Current Single Title', 'neve'),
 						'type'  => 'string',
 					],
 					'current_single_excerpt' => [
-						'label' => __( 'Current Single Excerpt', 'neve' ),
+						'label' => __('Current Single Excerpt', 'neve'),
 						'type'  => 'string',
 					],
 					'current_single_url'     => [
-						'label' => __( 'Current Single URL', 'neve' ),
+						'label' => __('Current Single URL', 'neve'),
 						'type'  => 'url',
 					],
 					'current_post_meta'      => [
-						'label' => __( 'Current Post Meta', 'neve' ),
+						'label' => __('Current Post Meta', 'neve'),
 						'type'  => 'string',
 					],
 					'meta_author'            => [
-						'label' => __( 'Author meta', 'neve' ),
+						'label' => __('Author meta', 'neve'),
 						'type'  => 'string',
 					],
 					'meta_date'              => [
-						'label' => __( 'Date meta', 'neve' ),
+						'label' => __('Date meta', 'neve'),
 						'type'  => 'string',
 					],
 					'meta_category'          => [
-						'label' => __( 'Category meta', 'neve' ),
+						'label' => __('Category meta', 'neve'),
 						'type'  => 'string',
 					],
 					'meta_comments'          => [
-						'label' => __( 'Comments meta', 'neve' ),
+						'label' => __('Comments meta', 'neve'),
 						'type'  => 'string',
 					],
 				],
 			],
 			[
-				'label'    => __( 'Archive', 'neve' ),
+				'label'    => __('Archive', 'neve'),
 				'controls' => [
 					'archive_description' => [
-						'label' => __( 'Archive Description', 'neve' ),
+						'label' => __('Archive Description', 'neve'),
 						'type'  => 'string',
 					],
 					'archive_title'       => [
-						'label' => __( 'Archive Title', 'neve' ),
+						'label' => __('Archive Title', 'neve'),
 						'type'  => 'string',
 					],
 					'archive_url'         => [
-						'label' => __( 'Archive URL', 'neve' ),
+						'label' => __('Archive URL', 'neve'),
 						'type'  => 'url',
 					],
 				],
 			],
 			[
-				'label'    => __( 'Author', 'neve' ),
+				'label'    => __('Author', 'neve'),
 				'controls' => [
 					'author_bio'  => [
-						'label' => __( 'Author Bio', 'neve' ),
+						'label' => __('Author Bio', 'neve'),
 						'type'  => 'string',
 					],
 					'author_name' => [
-						'label' => __( 'Author Name', 'neve' ),
+						'label' => __('Author Name', 'neve'),
 						'type'  => 'string',
 					],
 					'author_url'  => [
-						'label' => __( 'Author URL', 'neve' ),
+						'label' => __('Author URL', 'neve'),
 						'type'  => 'url',
 					],
 				],
 			],
 			[
-				'label'    => __( 'Current User', 'neve' ),
+				'label'    => __('Current User', 'neve'),
 				'controls' => [
 					'user_nicename' => [
-						'label' => __( 'User Nice Name', 'neve' ),
+						'label' => __('User Nice Name', 'neve'),
 						'type'  => 'custom_user',
 					],
 					'display_name'  => [
-						'label' => __( 'Display Name', 'neve' ),
+						'label' => __('Display Name', 'neve'),
 						'type'  => 'custom_user',
 					],
 					'user_email'    => [
-						'label' => __( 'User Email', 'neve' ),
+						'label' => __('User Email', 'neve'),
 						'type'  => 'custom_user',
 					],
 				],
 			],
 			[
-				'label'    => __( 'Global', 'neve' ),
+				'label'    => __('Global', 'neve'),
 				'controls' => [
 					'site_title'   => [
-						'label' => __( 'Site Title', 'neve' ),
+						'label' => __('Site Title', 'neve'),
 						'type'  => 'string',
 					],
 					'site_tagline' => [
-						'label' => __( 'Site Tagline', 'neve' ),
+						'label' => __('Site Tagline', 'neve'),
 						'type'  => 'string',
 					],
 					'home_url'     => [
-						'label' => __( 'Home URL', 'neve' ),
+						'label' => __('Home URL', 'neve'),
 						'type'  => 'url',
 					],
 					'current_year' => [
-						'label' => __( 'Current Year', 'neve' ),
+						'label' => __('Current Year', 'neve'),
 						'type'  => 'string',
 					],
 				],
 			],
 			[
-				'label'    => __( 'Cart', 'neve' ),
+				'label'    => __('Cart', 'neve'),
 				'controls' => [
 					'cart_total_currency_symbol' => [
-						'label' => __( 'Total + Currency Symbol', 'neve' ),
+						'label' => __('Total + Currency Symbol', 'neve'),
 						'type'  => 'custom_cart',
 					],
 					'cart_total'                 => [
-						'label' => __( 'Total', 'neve' ),
+						'label' => __('Total', 'neve'),
 						'type'  => 'custom_cart',
 					],
 					'currency_name'              => [
-						'label' => __( 'Currency Name', 'neve' ),
+						'label' => __('Currency Name', 'neve'),
 						'type'  => 'custom_cart',
 					],
 					'currency_symbol'            => [
-						'label' => __( 'Currency Symbol', 'neve' ),
+						'label' => __('Currency Symbol', 'neve'),
 						'type'  => 'custom_cart',
 					],
 				],
 			],
 		];
 
-		if ( class_exists( 'WooCommerce', false ) ) {
+		if (class_exists('WooCommerce', false)) {
 			$this->options[] = [
-				'label'    => __( 'WooCommerce', 'neve' ),
+				'label'    => __('WooCommerce', 'neve'),
 				'controls' => [
 					'product_price' => [
-						'label' => __( 'Product Price', 'neve' ),
+						'label' => __('Product Price', 'neve'),
 						'type'  => 'string',
 					],
 					'product_title' => [
-						'label' => __( 'Product Title', 'neve' ),
+						'label' => __('Product Title', 'neve'),
 						'type'  => 'string',
 					],
 					'cart_link'     => [
-						'label' => __( 'Cart URL', 'neve' ),
+						'label' => __('Cart URL', 'neve'),
 						'type'  => 'url',
 					],
 					'checkout_link' => [
-						'label' => __( 'Checkout URL', 'neve' ),
+						'label' => __('Checkout URL', 'neve'),
 						'type'  => 'url',
 					],
 				],
 			];
 		}
 
-		$this->options = apply_filters( 'neve_magic_tags_config', $this->options );
+		$this->options = apply_filters('neve_magic_tags_config', $this->options);
 
-		foreach ( $this->options as $magic_tag_group => $args ) {
-			foreach ( $args['controls'] as $tag => $tag_args ) {
+		foreach ($this->options as $magic_tag_group => $args) {
+			foreach ($args['controls'] as $tag => $tag_args) {
 				$this->magic_tags[] = $tag;
 			}
 		}

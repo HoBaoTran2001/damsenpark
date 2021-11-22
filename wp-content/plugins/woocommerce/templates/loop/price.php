@@ -24,18 +24,19 @@ global $product;
 ?>
 
 <?php if ($price_html = $product->get_price_html()) : ?>
-	<span class="dspark" style="font-family:'Montserrat';
-					font-size: 13px;">
-		Đầm Sen Park</span>
+
 
 	<div class="card-body">
-
+		<span class="" style="font-family:'Montserrat';
+					font-size: 13px;
+		color: #444444;">
+			Đầm Sen Park</span><br>
 		<span class="date" style="	position: static;
 		font-family: 'Montserrat';
 		font-size: 13px; 
 		color: #444444;">
 			<i class='far fa-calendar-alt' style='font-size:16px;color: #ED7200;'></i>
-			30/05/2021-01/06/2021
+			20/11/2021-31/12/2021
 		</span>
 
 		<span class=" price" style="position: static;
